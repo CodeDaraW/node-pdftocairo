@@ -8,26 +8,30 @@ import rimraf from 'rimraf';
 export interface Options {
   bin?: string;
   format: 'png' | 'jpeg' | 'tiff' | 'ps' | 'eps' | 'pdf' | 'svg';
-  // range?: { f: number, l: number };
-  // filter?: 'odd' | 'even' | 'single';
-  // resolution?: number | { x: number, y: number };
+  antialias?: 'default' | 'none' | 'gray' | 'subpixel' | 'fast' | 'good' | 'best';
+  range?: { f?: number, l?: number };
+  filter?: 'odd' | 'even';
+  singlefile?: boolean;
+  resolution?: number | { x: number, y: number };
   scale?: number | { x: number, y: number };
-  // crop?: { x?: number, y?: number, W?: number, H?: number, box?: 'crop' | 'media' };
-  // mono?: boolean;
-  // gray?: boolean;
-  // transparent?: boolean;
-  // level2?: boolean;
-  // level3?: boolean;
-  // originPageSizes?: boolean;
-  // icc?: string;
-  // paper?: string | { w: number, h: number };
-  // noCrop?: boolean;
-  // expand?: boolean;
-  // noShrink?: boolean;
-  // noCenter?: boolean;
-  // duplex?: boolean;
-  // ownerPassword?: string;
-  // userPassword?: string;
+  crop?: { x?: number, y?: number, W?: number, H?: number, sz?: number };
+  cropbox?: boolean;
+  mono?: boolean;
+  gray?: boolean;
+  transparent?: boolean;
+  level2?: boolean;
+  level3?: boolean;
+  originPageSizes?: boolean;
+  icc?: string;
+  jpegopt?: string;
+  paper?: string | { w: number, h: number };
+  nocrop?: boolean;
+  expand?: boolean;
+  noshrink?: boolean;
+  nocenter?: boolean;
+  duplex?: boolean;
+  ownerPassword?: string;
+  userPassword?: string;
 }
 
 const DEFAULT_BIN = 'pdftocairo';
@@ -48,6 +52,31 @@ const getOptionArgs = (options: Options): string[] => {
   const args: string[] = [];
   args.push(`-${options.format}`);
 
+  if (options.range) {
+    if (typeof options.range.f === 'number') args.push(`-f ${options.range.f}`);
+    if (typeof options.range.l === 'number') args.push(`-f ${options.range.l}`);
+  }
+
+  if (options.filter) {
+    const arg = options.filter === 'odd' ? '-o' : '-e';
+    args.push(arg);
+  }
+
+  if (options.singlefile) args.push('-singlefile');
+
+  if (options.resolution) {
+    if (typeof options.resolution === 'number') {
+      args.push(`-r ${options.resolution}`);
+    } else {
+      if (typeof options.resolution.x === 'number') {
+        args.push(`-rx ${options.resolution.x}`);
+      }
+      if (typeof options.resolution.y === 'number') {
+        args.push(`-ry ${options.resolution.y}`);
+      }
+    }
+  }
+
   if (options.scale) {
     if (typeof options.scale === 'number') {
       args.push(`-scale-to ${options.scale}`);
@@ -60,6 +89,47 @@ const getOptionArgs = (options: Options): string[] => {
       }
     }
   }
+
+  if (options.paper) {
+    if (typeof options.paper === 'string') {
+      args.push(`-paper ${options.paper}`);
+    } else {
+      if (typeof options.paper.w === 'number') {
+        args.push(`-paperw ${options.paper.w}`);
+      }
+      if (typeof options.paper.h === 'number') {
+        args.push(`-paperh ${options.paper.h}`);
+      }
+    }
+  }
+
+  if (options.crop) {
+    if (options.crop.x) args.push(`-x ${options.crop.x}`);
+    if (options.crop.y) args.push(`-y ${options.crop.y}`);
+    if (options.crop.H) args.push(`-H ${options.crop.H}`);
+    if (options.crop.W) args.push(`-W ${options.crop.W}`);
+    if (options.crop.sz) args.push(`-sz ${options.crop.sz}`);
+  }
+
+  if (options.cropbox) args.push('-cropbox');
+  if (options.mono) args.push('-mono');
+  if (options.gray) args.push('-gray');
+  if (options.antialias) args.push(`-antialias ${options.antialias}`);
+  if (options.level2) args.push('-level2');
+  if (options.level3) args.push('-level3');
+  if (options.transparent) args.push('-transp');
+  if (options.originPageSizes) args.push('-origpagesizes');
+  if (options.icc) args.push(`-icc ${options.icc}`);
+  if (options.jpegopt) args.push(`-jpegopt ${options.jpegopt}`);
+  if (options.nocrop) args.push('-nocrop');
+  if (options.expand) args.push('-expand');
+  if (options.noshrink) args.push('-noshrink');
+  if (options.nocenter) args.push('-nocenter');
+  if (options.duplex) args.push('-duplex');
+  if (options.ownerPassword) args.push(`-opw ${options.ownerPassword}`);
+  if (options.userPassword) args.push(`-upw ${options.userPassword}`);
+
+  args.push('-q');
 
   return args;
 };
