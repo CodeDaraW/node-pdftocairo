@@ -1,0 +1,7 @@
+.vscode
+node_modules
+lib
+test-data
+build
+yarn.lock
+*.DS_Store

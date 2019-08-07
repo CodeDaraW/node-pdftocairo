@@ -1,0 +1,31 @@
+{
+  "name": "node-pdftocairo",
+  "version": "1.0.0",
+  "description": "node.js wrapper for pdftocairo",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "rm -rf lib && tsc",
+    "lint": "eslint --ext .js,.ts ./src ./test"
+  },
+  "author": "CodeDaraW@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.0.12",
+    "@types/rimraf": "^2.0.2",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-typescript": "^4.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  },
+  "dependencies": {
+    "glob": "^7.1.4",
+    "rimraf": "^2.6.3"
+  }
+}
