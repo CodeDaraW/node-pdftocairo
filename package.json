@@ -3,11 +3,23 @@
   "version": "1.0.0",
   "description": "node.js wrapper for pdftocairo",
   "main": "lib/index.js",
+  "files": [
+    "lib/*"
+  ],
   "scripts": {
     "build": "rm -rf lib && tsc",
     "lint": "eslint --ext .js,.ts ./src ./test"
   },
   "author": "CodeDaraW@gmail.com",
+  "repository": "github:CodeDaraW/node-pdftocairo",
+  "homepage": "https://github.com/CodeDaraW/node-pdftocairo",
+  "bugs": {
+    "url": "https://github.com/CodeDaraW/node-pdftocairo/issues"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/glob": "^7.1.1",
