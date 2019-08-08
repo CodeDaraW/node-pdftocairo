@@ -9,7 +9,8 @@
   "scripts": {
     "build": "rm -rf lib && tsc",
     "test": "jest --config ./jest.config.json --coverage --env=node",
-    "lint": "eslint --ext .js,.ts ./src ./test"
+    "lint": "eslint --ext .js,.ts ./src ./test",
+    "codecov": "codecov -f coverage/*.json"
   },
   "author": "CodeDaraW@gmail.com",
   "repository": "github:CodeDaraW/node-pdftocairo",
@@ -29,6 +30,7 @@
     "@types/rimraf": "^2.0.2",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
+    "codecov": "^3.5.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-typescript": "^4.0.1",
     "eslint-plugin-import": "^2.18.2",
