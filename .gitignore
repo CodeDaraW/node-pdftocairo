@@ -2,6 +2,7 @@
 node_modules
 lib
 test-data
+coverage
 build
 yarn.lock
 *.DS_Store

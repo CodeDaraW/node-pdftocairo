@@ -1,40 +1,40 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "rootDir": "src/",
-        "outDir": "lib/",
-        "module": "commonjs",
-        "target": "es2015",
-        "sourceMap": false,
-        "allowJs": false,
-        "moduleResolution": "node",
-        "forceConsistentCasingInFileNames": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noImplicitAny": false,
-        "strictNullChecks": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "noUnusedLocals": true,
-        "importHelpers": true,
-        "esModuleInterop": true,
-        "declaration": true,
-        "downlevelIteration": true,
-        "resolveJsonModule": true,
-        "types": [
-            "jest",
-            "node"
-        ]
-    },
-    "exclude": [
-        "node_modules",
-        "public",
-        "build",
-        "scripts",
-        "acceptance-tests",
-        "webpack",
-        "jest",
-        "src/setupTests.ts",
-        "test/",
-        "test-data/"
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src/",
+    "outDir": "lib/",
+    "module": "commonjs",
+    "target": "es2015",
+    "sourceMap": false,
+    "allowJs": false,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "types": [
+      "jest",
+      "node"
     ]
+  },
+  "exclude": [
+    "node_modules",
+    "public",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts",
+    "test/",
+    "test-data/"
+  ]
 }

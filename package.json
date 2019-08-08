@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build": "rm -rf lib && tsc",
+    "test": "jest --config ./jest.config.json --coverage --env=node",
     "lint": "eslint --ext .js,.ts ./src ./test"
   },
   "author": "CodeDaraW@gmail.com",

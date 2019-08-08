@@ -181,7 +181,7 @@ class PDFToCairo {
         }
 
         if (typeof outputFile === 'string') {
-          resolve();
+          resolve(null);
         } else {
           const files = await findFiles(`${outputPath}*`);
           const buffers = files.sort().map(file => fs.readFileSync(file));
