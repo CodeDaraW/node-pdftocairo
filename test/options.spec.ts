@@ -139,14 +139,4 @@ describe('options', () => {
     const res = await input(logoPath, options).output();
     expect(res.length).toBe(1);
   });
-
-  test('antialias', async () => {
-    const options: Options = {
-      format: 'png',
-      antialias: 'gray',
-    };
-
-    const res = await input(samplePath, options).output();
-    expect(res.length).toBe(2);
-  });
 });
