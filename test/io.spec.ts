@@ -26,6 +26,15 @@ describe('io', () => {
     expect(res.length).toBe(pageCount);
   });
 
+  test('error input', async () => {
+    const buffer = Buffer.from('');
+    try {
+      await input(buffer, options).output();
+    } catch (error) {
+      expect(error).toEqual('Error opening a PDF file.');
+    }
+  });
+
   test('output as file', async () => {
     const res = await input(inputPath, options).output(outputPath);
     const imgFiles = await findFiles(`${outputPath}*`);
