@@ -54,7 +54,7 @@ const getOptionArgs = (options: Options): string[] => {
 
   if (options.range) {
     if (typeof options.range.f === 'number') args.push(`-f ${options.range.f}`);
-    if (typeof options.range.l === 'number') args.push(`-f ${options.range.l}`);
+    if (typeof options.range.l === 'number') args.push(`-l ${options.range.l}`);
   }
 
   if (options.filter) {
