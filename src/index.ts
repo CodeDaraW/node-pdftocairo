@@ -174,7 +174,7 @@ class PDFToCairo {
     }
 
     return new Promise((resolve, reject) => {
-      child.on('close', async code => {
+      child.on('close', async (code) => {
         if (code !== 0) {
           reject(ERROR_MESSAGES[code]);
           return;
@@ -184,7 +184,7 @@ class PDFToCairo {
           resolve(null);
         } else {
           const files = await findFiles(`${outputPath}*`);
-          const buffers = files.sort().map(file => fs.readFileSync(file));
+          const buffers = files.sort().map((file) => fs.readFileSync(file));
           this.cleanUpTemp();
           resolve(buffers);
         }
@@ -202,7 +202,7 @@ class PDFToCairo {
 
   private cleanUpTemp(): void {
     try {
-      this.tmps.forEach(f => rimraf.sync(f));
+      this.tmps.forEach((f) => rimraf.sync(f));
     } catch (error) {
       // ignore
     }
