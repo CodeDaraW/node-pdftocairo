@@ -17,7 +17,7 @@ describe('io', () => {
   // cleanup generated image files
   afterAll(async () => {
     const imgFiles = await findFiles(`${outputPath}*`);
-    imgFiles.forEach(f => rimraf.sync(f));
+    imgFiles.forEach((f) => rimraf.sync(f));
   });
 
   test('input as buffer', async () => {
