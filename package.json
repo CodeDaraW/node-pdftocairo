@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "glob": "^7.1.4",
-    "rimraf": "^2.6.3"
+    "rimraf": "^3.0.0"
   }
 }
