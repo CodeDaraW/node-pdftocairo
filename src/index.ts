@@ -161,7 +161,7 @@ class PDFToCairo {
   public async output(outputFile?: string): Promise<Buffer[] | null> {
     // '-' means reading PDF file from stdin
     const inputPath = typeof this.input === 'string' ? this.input : '-';
-    const outputPath = outputFile || path.join(this.makeTempDir(), 'result');
+    const outputPath = outputFile || path.join(await this.makeTempDir(), 'result');
 
     this.args.push(inputPath, outputPath);
 
@@ -184,7 +184,9 @@ class PDFToCairo {
           resolve(null);
         } else {
           const files = await findFiles(`${outputPath}*`);
-          const buffers = files.sort().map((file) => fs.readFileSync(file));
+          const buffers = await Promise.all(
+            files.sort().map((file) => fs.promises.readFile(file)),
+          );
           this.cleanUpTemp();
           resolve(buffers);
         }
@@ -192,10 +194,10 @@ class PDFToCairo {
     });
   }
 
-  private makeTempDir(): string {
+  private async makeTempDir(): Promise<string> {
     const uniqueId = crypto.randomBytes(16).toString('hex');
     const outputPath = path.join('/tmp', uniqueId);
-    fs.mkdirSync(outputPath);
+    await fs.promises.mkdir(outputPath);
     this.tmps.push(outputPath);
     return outputPath;
   }
