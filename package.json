@@ -1,6 +1,6 @@
 {
   "name": "node-pdftocairo",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "node.js wrapper for pdftocairo",
   "main": "lib/index.js",
   "files": [
