@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "node.js wrapper for pdftocairo",
   "main": "lib/index.js",
+	"types": "lib/index.d.ts",
   "files": [
     "lib/*"
   ],
@@ -10,7 +11,8 @@
     "build": "rm -rf lib && tsc",
     "test": "jest --config ./jest.config.json --coverage --env=node",
     "lint": "eslint --ext .js,.ts ./src ./test",
-    "codecov": "codecov -f coverage/*.json"
+    "codecov": "codecov -f coverage/*.json",
+		"prepare": "npm run build"
   },
   "author": "CodeDaraW@gmail.com",
   "repository": "github:CodeDaraW/node-pdftocairo",
