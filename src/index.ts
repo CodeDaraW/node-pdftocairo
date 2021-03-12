@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import util from 'util';
-import { spawn } from 'child_process';
+import { spawn, exec } from 'child_process';
 import glob from 'glob';
 import rimraf from 'rimraf';
 
@@ -204,6 +204,12 @@ class PDFToCairo {
     }
     return withTempDir((tmp) => generateFiles(path.join(tmp, 'result')));
   }
+
+  public async version(): Promise<string> {
+    return (await util.promisify(exec)(`${this.bin} -v`)).stderr;
+  }
 }
 
 export const input = (file: string | Buffer, options: Options) => new PDFToCairo(file, options);
+
+export const version = (options?: Options) => new PDFToCairo('', options ?? { format: 'png' }).version();

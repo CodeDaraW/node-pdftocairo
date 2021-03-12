@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import glob from 'glob';
 import rimraf from 'rimraf';
-import { input, Options } from '../src';
+import { input, Options, version } from '../src';
 
 const findFiles = async (patten: string): Promise<string[]> => new Promise((resolve, reject) => {
   glob(patten, (err, files) => (err ? reject(err) : resolve(files)));
@@ -45,5 +45,10 @@ describe('io', () => {
   test('output as buffer', async () => {
     const res = await input(inputPath, options).output();
     expect(res.length).toBe(pageCount);
+  });
+
+  test('output version', async () => {
+    const res = await version();
+    expect(res).toContain('Poppler');
   });
 });
