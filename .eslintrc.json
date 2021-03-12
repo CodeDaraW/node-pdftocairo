@@ -5,7 +5,8 @@
   ],
   "parserOptions": {
     "ecmaVersion": 2018,
-    "sourceType": "module"
+    "sourceType": "module",
+		"project": "./tsconfig.test.json"
   },
   "rules": {
     "no-dupe-class-members": "off",

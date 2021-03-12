@@ -176,7 +176,7 @@ class PDFToCairo {
     return new Promise((resolve, reject) => {
       child.on('close', async (code) => {
         if (code !== 0) {
-          reject(ERROR_MESSAGES[code]);
+          reject(ERROR_MESSAGES[code!]);
           return;
         }
 
