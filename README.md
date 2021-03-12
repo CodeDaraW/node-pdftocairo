@@ -47,6 +47,18 @@ const options = { format: 'png' };
 await input(inputPath, options).output(outputPath);
 ```
 
+**Get the pdftocairo version**
+``` typescript
+import { version } from 'node-pdftocairo';
+
+const versionString = await version();
+// versionString will be something like:
+// pdftocairo version 0.86.1
+// Copyright 2005-2020 The Poppler Developers - http://poppler.freedesktop.org
+// Copyright 1996-2011 Glyph & Cog, LLC
+
+```
+
 ### Options
 Reference: [Ubuntu Manpage: pdftocairo](http://manpages.ubuntu.com/manpages/bionic/man1/pdftocairo.1.html)  
 
