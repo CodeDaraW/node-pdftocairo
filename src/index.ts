@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import crypto from 'crypto';
+import os from 'os';
+import util from 'util';
 import { spawn } from 'child_process';
 import glob from 'glob';
 import rimraf from 'rimraf';
@@ -138,14 +139,21 @@ const findFiles = async (patten: string): Promise <string[]> => new Promise((res
   glob(patten, (err, files) => (err ? reject(err) : resolve(files)));
 });
 
+const withTempDir = async <T extends unknown> (fn: (dir: string) => Promise<T>) => {
+  const dir = await fs.promises.mkdtemp(await fs.promises.realpath(os.tmpdir()) + path.sep);
+  try {
+    return await fn(dir);
+  } finally {
+    await util.promisify(rimraf)(dir);
+  }
+};
+
 class PDFToCairo {
   private bin: string;
 
   private args: string[] = [];
 
   private input: string | Buffer;
-
-  private tmps: string[] = [];
 
   public constructor(file: string | Buffer, options: Options) {
     this.input = file;
@@ -161,53 +169,40 @@ class PDFToCairo {
   public async output(outputFile?: string): Promise<Buffer[] | null> {
     // '-' means reading PDF file from stdin
     const inputPath = typeof this.input === 'string' ? this.input : '-';
-    const outputPath = outputFile || path.join(await this.makeTempDir(), 'result');
+    const generateFiles = async (outputPath: string): Promise<Buffer[] | null> => {
+      this.args.push(inputPath, outputPath);
 
-    this.args.push(inputPath, outputPath);
+      const child = spawn(this.bin, this.args, { shell: true });
 
-    const child = spawn(this.bin, this.args, { shell: true });
+      if (typeof this.input !== 'string') {
+        child.stdin.setDefaultEncoding('utf-8');
+        child.stdin.write(this.input);
+        child.stdin.end();
+      }
 
-    if (typeof this.input !== 'string') {
-      child.stdin.setDefaultEncoding('utf-8');
-      child.stdin.write(this.input);
-      child.stdin.end();
-    }
+      return new Promise((resolve, reject) => {
+        child.on('close', async (code) => {
+          if (code !== 0) {
+            reject(ERROR_MESSAGES[code!]);
+            return;
+          }
 
-    return new Promise((resolve, reject) => {
-      child.on('close', async (code) => {
-        if (code !== 0) {
-          reject(ERROR_MESSAGES[code!]);
-          return;
-        }
-
-        if (typeof outputFile === 'string') {
-          resolve(null);
-        } else {
-          const files = await findFiles(`${outputPath}*`);
-          const buffers = await Promise.all(
-            files.sort().map((file) => fs.promises.readFile(file)),
-          );
-          this.cleanUpTemp();
-          resolve(buffers);
-        }
+          if (typeof outputFile === 'string') {
+            resolve(null);
+          } else {
+            const files = await findFiles(`${outputPath}*`);
+            const buffers = await Promise.all(
+              files.sort().map((file) => fs.promises.readFile(file)),
+            );
+            resolve(buffers);
+          }
+        });
       });
-    });
-  }
-
-  private async makeTempDir(): Promise<string> {
-    const uniqueId = crypto.randomBytes(16).toString('hex');
-    const outputPath = path.join('/tmp', uniqueId);
-    await fs.promises.mkdir(outputPath);
-    this.tmps.push(outputPath);
-    return outputPath;
-  }
-
-  private cleanUpTemp(): void {
-    try {
-      this.tmps.forEach((f) => rimraf.sync(f));
-    } catch (error) {
-      // ignore
+    };
+    if (outputFile) {
+      return generateFiles(outputFile);
     }
+    return withTempDir((tmp) => generateFiles(path.join(tmp, 'result')));
   }
 }
 
