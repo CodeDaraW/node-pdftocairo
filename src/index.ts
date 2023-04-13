@@ -36,18 +36,6 @@ export interface Options {
 
 const DEFAULT_BIN = 'pdftocairo';
 
-/**
- * @see http://manpages.ubuntu.com/manpages/bionic/man1/pdftocairo.1.html
- */
-const ERROR_MESSAGES = {
-  0: 'No error.',
-  1: 'Error opening a PDF file.',
-  2: 'Error opening an output file.',
-  3: 'Error related to PDF permissions.',
-  4: 'Error related to ICC profile.',
-  99: 'Other error.',
-};
-
 const getOptionArgs = (options: Options): string[] => {
   const args: string[] = [];
   args.push(`-${options.format}`);
@@ -174,9 +162,14 @@ class PDFToCairo {
     }
 
     return new Promise((resolve, reject) => {
+      let errMsg: string;
+      child.stderr.on('data', (data) => {
+        errMsg = `${data}`;
+      });
+
       child.on('close', async (code) => {
         if (code !== 0) {
-          reject(ERROR_MESSAGES[code]);
+          reject(new Error(`[code ${code}] ${errMsg || 'unknown error'}`));
           return;
         }
 
