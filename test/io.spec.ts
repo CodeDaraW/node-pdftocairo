@@ -31,7 +31,7 @@ describe('io', () => {
     try {
       await input(buffer, options).output();
     } catch (error) {
-      expect(error).toEqual('Error opening a PDF file.');
+      expect(error).toEqual(new Error('[code 1] Error opening PDF file.\n'));
     }
   });
 
